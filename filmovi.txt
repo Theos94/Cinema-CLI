@@ -1,0 +1,19 @@
+[{
+		"ID": "1",
+		"naziv": "Infinity War",
+		"zanr": "akcioni",
+		"trajanje": "135min"
+	},
+	{
+		"ID": "2",
+		"naziv": "Jurassic World",
+		"zanr": "avantura",
+		"trajanje": "115min"
+	},
+	{
+		"ID": "3",
+		"naziv": "Deadpool 2",
+		"zanr": "akcioni",
+		"trajanje": "120min"
+	}
+]
