@@ -1,7 +1,7 @@
 from testingErrors import try_int, try_str, try_funk
 
-# Uzimamo filmove ovde, vraca filmove stavljene u array.
 # TODO Skontati bolji nacin od temp_film dicta. Mora postojati
+# Uzimamo filmove ovde, vraca filmove stavljene u array.
 
 
 def uzmi_filmove():
@@ -20,19 +20,26 @@ def uzmi_filmove():
             }
 
             filmovi.append(temp_film)
+
+    filmovi = sortiraj_filmove(filmovi)
     return filmovi
 
 
 def format_film(film):
-    return "{Naziv} - {Zanr} - {Cena} - {Trajanje}".format(**film)
+    return "{ID} - {Naziv} - {Zanr} - {Cena} - {Trajanje}".format(**film)
+
+
+def print_film(film):
+    print("-" * 50)
+    print(format_film(film))
 
 
 def print_filmove():
     filmovi = uzmi_filmove()
 
     for film in filmovi:
-        print(format_film(film))
         print("-" * 50)
+        print(format_film(film))
 
 
 def zapisi_filmove(filmovi):
@@ -46,6 +53,14 @@ def zapisi_filmove(filmovi):
             f.write(film + "\n")
 
 
+def sortiraj_filmove(filmovi):
+    sorted_filmovi = sorted(filmovi, key=lambda k: k["ID"])
+    return sorted_filmovi
+
+
+# TODO Dati korisniku opciju da ukuca ID! Ovako ce brljati program previse
+
+
 def dodaj_film():
     filmovi = uzmi_filmove()
 
@@ -55,7 +70,7 @@ def dodaj_film():
     trajanje = try_str("Trajanje: ")
 
     temp_film = {
-        "ID": str(int(filmovi[-1]["ID"]) + 1),
+        "ID": str(len(filmovi) + 1),
         "Naziv": naziv,
         "Zanr": zanr,
         "Cena": cena,
@@ -65,3 +80,61 @@ def dodaj_film():
     filmovi.append(temp_film)
 
     zapisi_filmove(filmovi)
+
+
+def izbrisi_film():
+    filmovi = uzmi_filmove()
+
+    print_filmove()
+
+    nadjenFilm = False
+
+    while nadjenFilm == False:
+        print("-" * 50)
+        id = try_int("Unesite ID filma za brisanje: ")
+
+        for index, film in enumerate(filmovi):
+            if id == film["ID"]:
+                nadjenFilm = True
+                filmovi.pop(index)
+
+    zapisi_filmove(filmovi)
+
+
+def edit_film():
+    filmovi = uzmi_filmove()
+
+    print_filmove()
+
+    def edit(index, film):
+        print("-" * 50)
+        naziv = try_str("Naziv filma: ")
+        print("-" * 50)
+        zanr = try_str("Zanr: ")
+        print("-" * 50)
+        cena = try_str("Cena: ")
+        print("-" * 50)
+        trajanje = try_str("Trajanje: ")
+        print("-" * 50)
+
+        filmovi[index] = {
+            "ID": film["ID"],
+            "Naziv": naziv,
+            "Zanr": zanr,
+            "Cena": cena,
+            "Trajanje": trajanje
+        }
+
+        zapisi_filmove(filmovi)
+
+    nadjenFilm = False
+
+    while nadjenFilm == False:
+        print("-" * 50)
+        id = try_int("Unesite ID filma za editovanje: ")
+
+        for index, film in enumerate(filmovi):
+            if id == film["ID"]:
+                nadjenFilm = True
+                print_film(film)
+                edit(index, film)

@@ -1,5 +1,3 @@
-
-
 def try_int(opis):
     while True:
         try:
@@ -8,19 +6,19 @@ def try_int(opis):
         except ValueError:
             print("Niste uneli broj, probajte ponovo")
         else:
-            return broj
+            return broj.strip()
 
 
 def try_str(opis):
     while True:
         try:
-            str = input(opis)
+            string = input(opis)
             if not str:
                 raise SyntaxError
         except SyntaxError:
             print("Niste uneli validan String")
         else:
-            return str
+            return string.strip()
 
 
 def try_funk(funk, callback_funk):
@@ -30,5 +28,3 @@ def try_funk(funk, callback_funk):
         print(e)
         callback_funk()
         raise
-
-
