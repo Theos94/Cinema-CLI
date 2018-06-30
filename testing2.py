@@ -4,10 +4,24 @@ from testingErrors import try_int, try_str, try_funk
 # Uzimamo filmove ovde, vraca filmove stavljene u array.
 
 
-def uzmi_filmove():
+def uzmi_filmove2():
     filmovi = []
 
     with open("filmoviTesting.txt", "r") as f:
+        kljucevi = f.readline().strip().split(":")
+        for line in f.readlines():
+            film = dict()
+            for i, v in enumerate(line.strip().split(":")):
+                film[kljucevi[i]] = v
+            filmovi.append(film)
+    filmovi = sortiraj_filmove(filmovi)
+    return filmovi
+
+
+def uzmi_filmove():
+    filmovi = []
+
+    with open("filmovi.txt", "r") as f:
         for line in f:
             line = line.strip()
             temp_film = line.split(":")
