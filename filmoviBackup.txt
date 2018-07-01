@@ -1,19 +1,4 @@
-[{
-		"ID": "1",
-		"naziv": "Infinity War",
-		"zanr": "akcioni",
-		"trajanje": "135min"
-	},
-	{
-		"ID": "2",
-		"naziv": "Jurassic World",
-		"zanr": "avantura",
-		"trajanje": "115min"
-	},
-	{
-		"ID": "3",
-		"naziv": "Deadpool 2",
-		"zanr": "akcioni",
-		"trajanje": "120min"
-	}
-]
+ID:Naziv:Zanr:Cena:Trajanje:Datum:Pocetak:Sala:SlobodnoMesta:UkupnoMesta
+1:Infinity War:Akcioni:450:135:10-7-2018:22-22:1:100:100
+2:Jurassic World:Avantura:400:126:11-7-2018:22-22:4:150:150
+3:Deadpool 2:Akcioni:270:115:12-7-2018:22-22:3:50:50

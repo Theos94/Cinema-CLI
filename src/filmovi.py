@@ -16,7 +16,7 @@ def uzmi_filmove():
 
 
 def format_film(film):
-    return "{ID} - {Naziv} - {Zanr} - {Cena} - {Trajanje}".format(**film)
+    return "{ID} - {Naziv} - {Zanr} - {Trajanje}".format(**film)
 
 
 def print_film(film):

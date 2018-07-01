@@ -1,5 +1,5 @@
 from errorHandler import try_int, try_str, try_funk
-from projekcije import prikazi_projekcije, dodaj_projekciju, izbrisi_projekciju
+from projekcije import prikazi_projekcije, dodaj_projekciju, izbrisi_projekciju, izmeni_projekciju
 from filmovi import print_filmove
 
 
@@ -34,7 +34,8 @@ def navigacija(broj):
         dodaj_projekciju()
         menadzer_meni()
     elif broj == "4":
-        print("4")
+        izmeni_projekciju()
+        menadzer_meni()
     elif broj == "5":
         izbrisi_projekciju()
         menadzer_meni()

@@ -1,5 +1,5 @@
 from errorHandler import try_int, try_str, try_funk
-from filmovi import print_filmove, uzmi_filmove
+from filmovi import print_filmove, uzmi_filmove, format_film
 
 
 def uzmi_kljuceve_proj():
@@ -73,6 +73,7 @@ def prikupi_inpute(idProj, izabranFilm):
 
         Datum = try_str("Unesite Datum projekcije, format - dd-mm-yy: ")
         Pocetak = try_str("Unesite Pocetak projekcije, format - hh-mm: ")
+        Cena = try_int("Unesite cenu Projekcije: ")
         Sala = izaberi_salu()
 
         for i in projekcije:
@@ -87,7 +88,7 @@ def prikupi_inpute(idProj, izabranFilm):
         "ID": idProj,
         "Naziv": izabranFilm["Naziv"],
         "Zanr": izabranFilm["Zanr"],
-        "Cena": izabranFilm["Cena"],
+        "Cena": Cena,
         "Trajanje": izabranFilm["Trajanje"],
         "Datum": Datum,
         "Pocetak": Pocetak,
@@ -99,25 +100,23 @@ def prikupi_inpute(idProj, izabranFilm):
     return nova_projekcija
 
 
-def dodaj_projekciju():
-    projekcije = uzmi_projekcije()
+def izaberi_film():
     filmovi = uzmi_filmove()
-
     print_filmove()
-
     while True:
         print("-" * 50)
         idFilma = try_str("Unesite ID filma za projekciju: ")
-        postojiID = False
 
         for film in filmovi:
             if idFilma == film["ID"]:
-                izabranFilm = film
-                postojiID = True
+                return film
 
-        if postojiID == True:
-            break
 
+def dodaj_projekciju():
+    projekcije = uzmi_projekcije()
+    izabranFilm = izaberi_film()
+
+    print("-" * 50)
     print("Projekcije koje vec postoje")
     prikazi_projekcije()
 
@@ -136,9 +135,8 @@ def dodaj_projekciju():
 
     if postojiID == False:
         nova_projekcija = prikupi_inpute(idProj, izabranFilm)
-
         projekcije.append(nova_projekcija)
-        # zapisi_projekcije(projekcije)
+        zapisi_projekcije(projekcije)
 
 
 def izbrisi_projekciju():
@@ -157,13 +155,77 @@ def izbrisi_projekciju():
                 nadjenaProjekcija = True
                 projekcije.pop(index)
 
-    # zapisi_projekcije(projekcije)
+    zapisi_projekcije(projekcije)
+
+
+def izmeni_projekciju():
+    projekcije = uzmi_projekcije()
+
+    print("-" * 50)
+    print("Projekcije koje vec postoje")
+    prikazi_projekcije()
+
+    while True:
+        print("-" * 50)
+        idProj = try_str("Unesite ID projekcije: ")
+        postoji = False
+
+        for i in projekcije:
+            if idProj == i["ID"]:
+                izabrana_projekcija = i
+                postoji = True
+
+        if postoji == True:
+            break
+
+    print("-" * 50)
+    print("Izabrali ste " + format_projekciju(izabrana_projekcija))
+    print("-" * 50)
+    print("Izaberite novi film za projekciju ")
+    izabran_film = izaberi_film()
+    print("-" * 50)
+    print("Izabrali ste " + format_film(izabran_film))
+
+    while True:
+        slobodanTermin = True
+
+        Datum = try_str("Unesite Datum projekcije, format - dd-mm-yy: ")
+        Pocetak = try_str("Unesite Pocetak projekcije, format - hh-mm: ")
+        Cena = try_int("Unesite cenu Projekcije: ")
+        Sala = izaberi_salu()
+
+        for i in projekcije:
+            if Datum == i["Datum"] and Pocetak == i["Pocetak"] and Sala[0] == i["Sala"]:
+                print("Zauzeta sala za taj termin, probajte ponovo!")
+                slobodanTermin = False
+
+        if slobodanTermin:
+            break
+
+    izmenjena_projekcija = {
+        "ID": izabrana_projekcija["ID"],
+        "Naziv": izabran_film["Naziv"],
+        "Zanr": izabran_film["Zanr"],
+        "Cena": Cena,
+        "Trajanje": izabran_film["Trajanje"],
+        "Datum": Datum,
+        "Pocetak": Pocetak,
+        "Sala": Sala[0],
+        "SlobodnoMesta": Sala[1],
+        "UkupnoMesta": Sala[1]
+    }
+
+    for i, v in enumerate(projekcije):
+        if izmenjena_projekcija["ID"] == v["ID"]:
+            projekcije[i] = izmenjena_projekcija
+
+    zapisi_projekcije(projekcije)
 
 
 def zapisi_projekcije(projekcije):
     kljucevi = uzmi_kljuceve_proj()
-
-    kljucevi_string = "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}".format(*kljucevi)
+    kljucevi_string = ":".join(kljucevi)
+    # kljucevi_string = "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}".format(*kljucevi)
 
     projekcije_string = []
     for projekcija in projekcije:

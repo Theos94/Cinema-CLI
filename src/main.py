@@ -17,4 +17,5 @@ def prodavac_meni():
     print("Prodavac meni")
 
 
-start()
+if __name__ == "__main__":
+    start()
