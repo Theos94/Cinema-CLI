@@ -1,6 +1,3 @@
-from errorHandler import try_int, try_str, try_funk
-
-
 def uzmi_filmove():
     filmovi = []
 

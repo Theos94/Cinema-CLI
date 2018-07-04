@@ -1,14 +1,14 @@
-from src.login import login
-from src.menadzer import menadzer_meni
+from src import login
+from src import menadzer
 
 
 def start():
-    korisnik = login()
+    korisnik = login.login()
 
     if korisnik["Uloga"] == "Menadzer":
         print("\n")
         print("Ulogovani kao Menadzer")
-        menadzer_meni()
+        menadzer.menadzer_meni()
     if korisnik["Uloga"] == "Prodavac":
         print("\n")
         print("Ulogovani kao Prodavac")
@@ -19,9 +19,5 @@ def prodavac_meni():
     print("Prodavac meni")
 
 
-# if __name__ == "__main__":
-#     start()
-
-import sys
-
-print(sys.path)
+if __name__ == "__main__":
+    start()

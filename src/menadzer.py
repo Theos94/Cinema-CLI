@@ -1,6 +1,6 @@
-from errorHandler import try_int, try_str, try_funk
-from projekcije import prikazi_projekcije, dodaj_projekciju, izbrisi_projekciju, izmeni_projekciju
-from filmovi import print_filmove
+from src.errorHandler import try_int
+from src.projekcije import prikazi_projekcije, dodaj_projekciju, izbrisi_projekciju, izmeni_projekciju
+from src.filmovi import print_filmove
 
 
 def meni():

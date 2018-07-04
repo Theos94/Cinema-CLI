@@ -1,4 +1,4 @@
-from errorHandler import try_int, try_str, try_funk
+from src.errorHandler import try_str
 
 
 def uzmi_korisnike():

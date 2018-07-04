@@ -1,5 +1,5 @@
-from errorHandler import try_int, try_str, try_funk
-from filmovi import print_filmove, uzmi_filmove, format_film
+from src.errorHandler import try_int, try_str
+from src.filmovi import print_filmove, uzmi_filmove, format_film
 
 
 def uzmi_kljuceve_proj():
