@@ -1,5 +1,6 @@
-from src.errorHandler import try_int, try_str
-from src.filmovi import print_filmove, uzmi_filmove, format_film
+from src.errorHandler import try_int, try_str, try_datum, try_vreme
+from src.filmovi import print_filmove, uzmi_filmove, format_film, dodaj_film
+import datetime
 
 
 def uzmi_kljuceve_proj():
@@ -52,64 +53,69 @@ def izaberi_salu():
     print("3 - 50 mesta")
     print("4 - 150 mesta")
     print("5 - 250 mesta")
-    Sala = try_str("Unesite Salu projekcije: ")
-    if Sala == "1":
-        return ["1", "100"]
-    elif Sala == "2":
-        return ["2", "80"]
-    elif Sala == "3":
-        return ["3", "50"]
-    elif Sala == "4":
-        return ["4", "150"]
-    elif Sala == "5":
-        return ["5", "250"]
+    while True:
+        Sala = try_int("Unesite Salu projekcije: ")
+        if Sala == "1":
+            return ["1", "100"]
+        elif Sala == "2":
+            return ["2", "80"]
+        elif Sala == "3":
+            return ["3", "50"]
+        elif Sala == "4":
+            return ["4", "150"]
+        elif Sala == "5":
+            return ["5", "250"]
+        else:
+            print("Pogresan unos, probajte ponovo")
 
 
 def prikupi_inpute(idProj, izabranFilm):
-    projekcije = uzmi_projekcije()
 
     while True:
-        slobodanTermin = True
 
-        Datum = try_str("Unesite Datum projekcije, format - dd-mm-yy: ")
-        Pocetak = try_str("Unesite Pocetak projekcije, format - hh-mm: ")
+        Datum = try_datum("Unesite Datum projekcije, format - dd-m-yy: ")
+        Pocetak = try_vreme("Unesite Pocetak projekcije, format - hh-mm: ")
         Cena = try_int("Unesite cenu Projekcije: ")
         Sala = izaberi_salu()
 
-        for i in projekcije:
-            if Datum == i["Datum"] and Pocetak == i["Pocetak"] and Sala[0] == i["Sala"]:
-                print("Zauzeta sala za taj termin, probajte ponovo!")
-                slobodanTermin = False
+        nova_projekcija = {
+            "ID": idProj,
+            "Naziv": izabranFilm["Naziv"],
+            "Zanr": izabranFilm["Zanr"],
+            "Cena": Cena,
+            "Trajanje": izabranFilm["Trajanje"],
+            "Datum": Datum,
+            "Pocetak": Pocetak,
+            "Sala": Sala[0],
+            "SlobodnoMesta": Sala[1],
+            "UkupnoMesta": Sala[1]
+        }
 
-        if slobodanTermin:
-            break
-
-    nova_projekcija = {
-        "ID": idProj,
-        "Naziv": izabranFilm["Naziv"],
-        "Zanr": izabranFilm["Zanr"],
-        "Cena": Cena,
-        "Trajanje": izabranFilm["Trajanje"],
-        "Datum": Datum,
-        "Pocetak": Pocetak,
-        "Sala": Sala[0],
-        "SlobodnoMesta": Sala[1],
-        "UkupnoMesta": Sala[1]
-    }
-
-    return nova_projekcija
+        imaMesta = proveraDatuma(nova_projekcija)
+        if imaMesta == True:
+            return nova_projekcija
+        else:
+            print("Zauzet termin za to vreme, probajte ponovo")
 
 
 def izaberi_film():
     filmovi = uzmi_filmove()
     print_filmove()
+    print("-" * 50)
+    print("Izaberite jedan of filmova ili dodajte novi")
+    print("-" * 50)
     while True:
-        print("-" * 50)
-        idFilma = try_str("Unesite ID filma za projekciju: ")
+        if try_str("Zelite li dodati novi film? Y or N: ").lower() == "y":
+            novi_film = dodaj_film()
+            return novi_film
+        else:
+            while True:
+                print("-" * 50)
+                idFilma = try_str("Unesite ID filma za projekciju: ")
 
-        for film in filmovi:
-            if idFilma == film["ID"]:
-                return film
+                for film in filmovi:
+                    if idFilma == film["ID"]:
+                        return film
 
 
 def dodaj_projekciju():
@@ -135,8 +141,61 @@ def dodaj_projekciju():
 
     if postojiID == False:
         nova_projekcija = prikupi_inpute(idProj, izabranFilm)
+        print("Uspesno ste dodali projekciju")
         projekcije.append(nova_projekcija)
         zapisi_projekcije(projekcije)
+
+
+def proveraDatuma(novaProjekcija):
+    novaProjSat, novaProjMinut = novaProjekcija["Pocetak"].split("-")
+
+    novaPocetak = datetime.timedelta(
+        hours=int(novaProjSat), minutes=int(novaProjMinut))
+    novaTrajanje = datetime.timedelta(minutes=int(novaProjekcija["Trajanje"]))
+
+    novaKraj = novaPocetak + novaTrajanje
+    novaSala = novaProjekcija["Sala"]
+
+    projekcije = uzmi_projekcije()
+    tajDatum = []
+    for i in projekcije:
+        if i["Datum"] == novaProjekcija["Datum"]:
+            tajDatum.append(i)
+
+    imaMesta = False
+    for i in tajDatum:
+        trajanjeProj = i["Trajanje"]
+        pocetakProj = i["Pocetak"]
+
+        sat, minut = pocetakProj.split("-")
+
+        pocetak = datetime.timedelta(hours=int(sat), minutes=int(minut))
+        trajanje = datetime.timedelta(minutes=int(trajanjeProj))
+
+        kraj = pocetak + trajanje
+
+        if novaKraj < pocetak:
+            imaMesta = True
+            break
+        elif novaPocetak > kraj:
+
+            imaMesta = True
+        elif novaPocetak < kraj:
+            if novaSala != i["Sala"]:
+                imaMesta = True
+                break
+            else:
+                imaMesta = False
+                break
+        else:
+            if novaSala != i["Sala"]:
+                imaMesta = True
+                break
+            else:
+                print("else kraj")
+                imaMesta = False
+
+    return imaMesta
 
 
 def izbrisi_projekciju():
@@ -154,6 +213,7 @@ def izbrisi_projekciju():
             if id == projekcija["ID"]:
                 nadjenaProjekcija = True
                 projekcije.pop(index)
+                print("Uspesno ste izbrisali projekciju")
 
     zapisi_projekcije(projekcije)
 
@@ -187,39 +247,34 @@ def izmeni_projekciju():
     print("Izabrali ste " + format_film(izabran_film))
 
     while True:
-        slobodanTermin = True
-
-        Datum = try_str("Unesite Datum projekcije, format - dd-mm-yy: ")
-        Pocetak = try_str("Unesite Pocetak projekcije, format - hh-mm: ")
+        Datum = try_datum("Unesite Datum projekcije, format - dd-m-yy: ")
+        Pocetak = try_vreme("Unesite Pocetak projekcije, format - hh-mm: ")
         Cena = try_int("Unesite cenu Projekcije: ")
         Sala = izaberi_salu()
 
-        for i in projekcije:
-            if Datum == i["Datum"] and Pocetak == i["Pocetak"] and Sala[0] == i["Sala"]:
-                print("Zauzeta sala za taj termin, probajte ponovo!")
-                slobodanTermin = False
+        izmenjena_projekcija = {
+            "ID": izabrana_projekcija["ID"],
+            "Naziv": izabran_film["Naziv"],
+            "Zanr": izabran_film["Zanr"],
+            "Cena": Cena,
+            "Trajanje": izabran_film["Trajanje"],
+            "Datum": Datum,
+            "Pocetak": Pocetak,
+            "Sala": Sala[0],
+            "SlobodnoMesta": Sala[1],
+            "UkupnoMesta": Sala[1]
+        }
 
-        if slobodanTermin:
-            break
-
-    izmenjena_projekcija = {
-        "ID": izabrana_projekcija["ID"],
-        "Naziv": izabran_film["Naziv"],
-        "Zanr": izabran_film["Zanr"],
-        "Cena": Cena,
-        "Trajanje": izabran_film["Trajanje"],
-        "Datum": Datum,
-        "Pocetak": Pocetak,
-        "Sala": Sala[0],
-        "SlobodnoMesta": Sala[1],
-        "UkupnoMesta": Sala[1]
-    }
-
-    for i, v in enumerate(projekcije):
-        if izmenjena_projekcija["ID"] == v["ID"]:
-            projekcije[i] = izmenjena_projekcija
-
-    zapisi_projekcije(projekcije)
+        imaMesta = proveraDatuma(izmenjena_projekcija)
+        if imaMesta == True:
+            for i, v in enumerate(projekcije):
+                if izmenjena_projekcija["ID"] == v["ID"]:
+                    projekcije[i] = izmenjena_projekcija
+                    zapisi_projekcije(projekcije)
+                    print("Uspesno ste izmenili projekciju")
+                    return
+        else:
+            print("Zauzet termin, probajte ponovo")
 
 
 def zapisi_projekcije(projekcije):
