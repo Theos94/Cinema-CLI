@@ -2,6 +2,7 @@ from src.errorHandler import try_int
 from src.projekcije import prikazi_projekcije, dodaj_projekciju, izbrisi_projekciju, izmeni_projekciju
 from src.filmovi import print_filmove
 from src.pretraga import pretraga
+from src.korisnici import dodaj_prodavca
 
 
 def meni():
@@ -41,7 +42,12 @@ def navigacija(broj):
         izbrisi_projekciju()
         menadzer_meni()
     elif broj == "6":
-        print("6")
+        print("\n")
+        print(50 * "-")
+        print("Unesite ispod podatke za novog korisnika")
+        print(50 * "-")
+        dodaj_prodavca()
+        menadzer_meni()
     elif broj == "7":
         pretraga()
         menadzer_meni()
