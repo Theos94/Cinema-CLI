@@ -47,6 +47,14 @@ def try_datum(opis):
             return datum.strip()
 
 
+def try_datum_bez(datum):
+    try:
+        if datetime.datetime.strptime(datum, "%d"):
+            return datum
+    except ValueError:
+        return datum
+
+
 def try_vreme(opis):
     while True:
         try:

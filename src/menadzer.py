@@ -1,6 +1,7 @@
 from src.errorHandler import try_int
 from src.projekcije import prikazi_projekcije, dodaj_projekciju, izbrisi_projekciju, izmeni_projekciju
 from src.filmovi import print_filmove
+from src.pretraga import pretraga
 
 
 def meni():
@@ -42,7 +43,8 @@ def navigacija(broj):
     elif broj == "6":
         print("6")
     elif broj == "7":
-        print("7")
+        pretraga()
+        menadzer_meni()
     elif broj == "8":
         quit()
 
