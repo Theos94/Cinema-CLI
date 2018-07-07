@@ -26,8 +26,7 @@ def login():
         lozinka = try_str("Unesite vasu Lozinku: ")
 
         for korisnik in korisnici:
-            if korisnik["Korisnicko"].lower() == username.lower(
-            ) and korisnik["Lozinka"] == lozinka:
+            if korisnik["Korisnicko"] == username and korisnik["Lozinka"] == lozinka:
                 return korisnik
         else:
             print(50 * "-")

@@ -19,42 +19,48 @@ def meni():
     print(50 * "-")
 
 
-def navigacija(broj):
-    if broj == "1":
-        print("\n")
-        print(50 * "-")
-        print("Svi filmovi u databazi")
-        print_filmove()
-        menadzer_meni()
-    elif broj == "2":
-        print("\n")
-        print(50 * "-")
-        print("Sve projekcije u databazi")
-        prikazi_projekcije()
-        menadzer_meni()
-    elif broj == "3":
-        dodaj_projekciju()
-        menadzer_meni()
-    elif broj == "4":
-        izmeni_projekciju()
-        menadzer_meni()
-    elif broj == "5":
-        izbrisi_projekciju()
-        menadzer_meni()
-    elif broj == "6":
-        print("\n")
-        print(50 * "-")
-        print("Unesite ispod podatke za novog korisnika")
-        print(50 * "-")
-        dodaj_prodavca()
-        menadzer_meni()
-    elif broj == "7":
-        pretraga()
-        menadzer_meni()
-    elif broj == "8":
-        quit()
+def navigacija():
+    while True:
+        broj = try_int("Unesite broj zeljene opcije: ")
+        if broj == "1":
+            print("\n")
+            print(50 * "-")
+            print("Svi filmovi u databazi")
+            print_filmove()
+            menadzer_meni()
+        elif broj == "2":
+            print("\n")
+            print(50 * "-")
+            print("Sve projekcije u databazi")
+            prikazi_projekcije()
+            menadzer_meni()
+        elif broj == "3":
+            dodaj_projekciju()
+            menadzer_meni()
+        elif broj == "4":
+            izmeni_projekciju()
+            menadzer_meni()
+        elif broj == "5":
+            izbrisi_projekciju()
+            menadzer_meni()
+        elif broj == "6":
+            print("\n")
+            print(50 * "-")
+            print("Unesite ispod podatke za novog korisnika")
+            print(50 * "-")
+            dodaj_prodavca()
+            menadzer_meni()
+        elif broj == "7":
+            pretraga()
+            menadzer_meni()
+        elif broj == "8":
+            quit()
+        else:
+            print("-" * 50)
+            print("Niste uneli odgovarajuci broj, probajte ponovo")
+            meni()
 
 
 def menadzer_meni():
     meni()
-    navigacija(try_int("Unesite broj zeljene opcije: "))
+    navigacija()

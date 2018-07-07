@@ -162,6 +162,10 @@ def proveraDatuma(novaProjekcija):
         if i["Datum"] == novaProjekcija["Datum"]:
             tajDatum.append(i)
 
+    if len(tajDatum) == 0:
+        imaMesta = True
+        return imaMesta
+
     imaMesta = False
     for i in tajDatum:
         trajanjeProj = i["Trajanje"]

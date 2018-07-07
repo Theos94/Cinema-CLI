@@ -14,23 +14,29 @@ def meni():
     print(50 * "-")
 
 
-def navigacija(broj, korisnik):
-    if broj == "1":
-        print("\n")
-        print(50 * "-")
-        print("Sve projekcije u databazi")
-        prikazi_projekcije()
-        prodavac_meni(korisnik)
-    elif broj == "2":
-        prodaj_karte(korisnik)
-        prodavac_meni(korisnik)
-    elif broj == "3":
-        pretraga()
-        prodavac_meni(korisnik)
-    elif broj == "4":
-        quit()
+def navigacija(korisnik):
+    while True:
+        broj = try_int("Unesite broj zeljene opcije: ")
+        if broj == "1":
+            print("\n")
+            print(50 * "-")
+            print("Sve projekcije u databazi")
+            prikazi_projekcije()
+            prodavac_meni(korisnik)
+        elif broj == "2":
+            prodaj_karte(korisnik)
+            prodavac_meni(korisnik)
+        elif broj == "3":
+            pretraga()
+            prodavac_meni(korisnik)
+        elif broj == "4":
+            quit()
+        else:
+            print("-" * 50)
+            print("Niste uneli odgovarajuci broj, probajte ponovo")
+            meni()
 
 
 def prodavac_meni(korisnik):
     meni()
-    navigacija(try_int("Unesite broj zeljene opcije: "), korisnik)
+    navigacija(korisnik)

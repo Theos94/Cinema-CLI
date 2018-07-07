@@ -3,3 +3,4 @@ Theos:1234:Uros:Dragicevic:Menadzer
 Omke:2222:Omar:Iriskic:Prodavac
 Egze:5555:Uros:Isakovic:Prodavac
 Makk:4444:Marko:Krcmar:Prodavac
+Djole:9999:Djordje:Srdanovic:Prodavac
