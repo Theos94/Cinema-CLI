@@ -3,4 +3,4 @@ ID:Naziv:Zanr:Cena:Trajanje:Datum:Pocetak:Sala:SlobodnoMesta:UkupnoMesta
 2:Jurassic World:Avantura:400:126:11-7-2018:22-22:4:150:150
 3:Deadpool 2:Akcioni:270:115:12-7-2018:22-22:3:50:50
 4:Jurassic World:Avantura:450:126:12-7-2018:21-30:5:250:250
-5:Infinity War:Akcioni:450:135:11-7-2018:21-00:5:250:250
+5:Jurassic World:Avantura:500:126:14-7-2018:12-00:1:100:100
